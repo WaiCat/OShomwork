@@ -4,8 +4,8 @@ import java.util.*;
 public class fcfs {
     public static void main(String[] args) throws IOException {
 
-        BufferedReader br = new BufferedReader(new FileReader("1.inp"));
-        BufferedWriter bw = new BufferedWriter(new FileWriter("1111.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Administrator\\IdeaProjects\\OShomwork\\5\\2.inp"));
+        BufferedWriter bw = new BufferedWriter(new FileWriter("22222.txt"));
 
         int n = Integer.parseInt(br.readLine());
 
@@ -38,14 +38,6 @@ public class fcfs {
                     break;
                 }
                 d.add(end);
-
-                end = Integer.parseInt(st.nextToken());
-                if (end == -1) {
-                    d.add(end);
-                    d.add(0);
-                    break;
-                }
-                d.add(end);
             }
             v.add(d);
         }
@@ -59,7 +51,11 @@ public class fcfs {
                     start[i] = -1;
                 }
             }
+            if(rest > 340){
+                if(rest > 340){
 
+                }
+            }
             if (passn == n - 1) {
                 int num = v.get(cpu).poll();
                 if (num == -1) {
@@ -137,9 +133,7 @@ public class fcfs {
                     }
                 }
             }
-
         }
-
 
         bw.write(rest + "\n");
         for (int i = 0; i < n; i++) {

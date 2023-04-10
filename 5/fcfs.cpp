@@ -1,16 +1,23 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <deque>
+#include <sstream>
+#include <string>
+#include <algorithm>
+#include <cstring>
+
 using namespace std;
 
 int main()
 {
-    ifstream fin("1.inp");
-    ofstream fout("111.txt");
+    ifstream fin("7.inp");
+    ofstream fout("77.txt");
 
     int n;
     fin >> n;
 
     vector<deque<int>> v;
-
     int total = 0;
     int rest = 0;
 
@@ -22,27 +29,16 @@ int main()
     bool pass[n];
     int passn = 0;
 
-    for (int i = 0; i < n; i++)
-    {
-        pass[i] = false;
-    }
+    memset(pass, false, sizeof(pass));
 
     for (int i = 0; i < n; i++)
     {
         deque<int> d;
         fin >> start[i];
+
         while (true)
         {
             int end;
-            fin >> end;
-            if (end == -1)
-            {
-                d.push_back(end);
-                d.push_back(0);
-                break;
-            }
-            d.push_back(end);
-
             fin >> end;
             if (end == -1)
             {
@@ -98,11 +94,12 @@ int main()
         else
         {
             int b = 0;
-            if (q.size() > 0)
+            if (!q.empty())
             {
                 cpu = q.front();
                 q.pop_front();
                 b = v[cpu].front();
+                v[cpu].pop_front();
                 total++;
                 b--;
                 if (b == 0)
@@ -137,6 +134,7 @@ int main()
             if (v[i].back() == 1 && !pass[i])
             {
                 int a = v[i].front();
+                v[i].pop_front();
                 a--;
                 if (a == 0)
                 {
@@ -176,9 +174,9 @@ int main()
             }
         }
     }
-
     fout << rest << "\n";
-    for(int i = 0; i<n; i++){
+    for (int i = 0; i < n; i++)
+    {
         fout << endtime[i] << "\n";
     }
     fout.close();
