@@ -4,8 +4,8 @@ import java.util.*;
 public class fcfs {
     public static void main(String[] args) throws IOException {
 
-        BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Administrator\\IdeaProjects\\OShomwork\\5\\2.inp"));
-        BufferedWriter bw = new BufferedWriter(new FileWriter("22222.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Administrator\\Downloads\\OShomwork\\5\\4.inp"));
+        BufferedWriter bw = new BufferedWriter(new FileWriter("44.txt"));
 
         int n = Integer.parseInt(br.readLine());
 
@@ -13,6 +13,7 @@ public class fcfs {
 
         int total = 0;
         int rest = 0;
+        int restf = 0;
 
         Deque<Integer> q = new LinkedList<>();
 
@@ -45,60 +46,69 @@ public class fcfs {
         int cpu = 0;
 
         while (passn < n) {
+
+
             for (int i = 0; i < n; i++) {
                 if (start[i] <= total && start[i] >= 0) {
                     q.add(i);
                     start[i] = -1;
                 }
             }
-            if(rest > 340){
-                if(rest > 340){
+            if (total == 212819) {
+                if (total == 212819) {
 
                 }
             }
-            if (passn == n - 1) {
-                int num = v.get(cpu).poll();
-                if (num == -1) {
-                    endtime[cpu] = total;
-                    break;
-                }
-                total += num;
-                if (v.get(cpu).getLast() == 1) {
-                    rest += num;
-                    v.get(cpu).pollLast();
-                    v.get(cpu).addLast(0);
-                    if (v.get(cpu).size() <= 2) {
-                        rest -= num;
-                    }
-                } else {
-                    v.get(cpu).pollLast();
-                    v.get(cpu).addLast(1);
-                }
-                continue;
-            } else {
-                int b = 0;
-                if (q.size() > 0) {
-                    cpu = q.poll();
-                    b = v.get(cpu).poll();
-                    total++;
-                    b--;
-                    if (b == 0) {
-                        if (v.get(cpu).getFirst() == -1) {
-                            pass[cpu] = true;
-                            endtime[cpu] = total;
-                            passn++;
-                        } else {
-                            v.get(cpu).pollLast();
-                            v.get(cpu).addLast(2);
-                        }
+//            if (passn == n - 2){
+//                if (passn == n - 2){
+//
+//                }
+//            }
+//            if (passn == n - 1) {
+//                int num = v.get(cpu).poll();
+//                if (num == -1) {
+//                    endtime[cpu] = total;
+//                    break;
+//                }
+//                total += num;
+//                if (v.get(cpu).getLast() == 1) {
+//                    rest += num;
+//                    v.get(cpu).pollLast();
+//                    v.get(cpu).addLast(0);
+//                    if (v.get(cpu).size() <= 2) {
+//                        rest -= num;
+//                    }
+//                } else {
+//                    restf=0;
+//                    v.get(cpu).pollLast();
+//                    v.get(cpu).addLast(1);
+//                }
+//                continue;
+//            } else {
+            int b = 0;
+            if (q.size() > 0) {
+                restf = 0;
+                cpu = q.poll();
+                b = v.get(cpu).poll();
+                total++;
+                b--;
+                if (b == 0) {
+                    if (v.get(cpu).getFirst() == -1) {
+                        pass[cpu] = true;
+                        endtime[cpu] = total;
+                        passn++;
                     } else {
-                        q.addFirst(cpu);
-                        v.get(cpu).addFirst(b);
+                        v.get(cpu).pollLast();
+                        v.get(cpu).addLast(2);
                     }
                 } else {
-                    total++;
-                    rest++;
+                    q.addFirst(cpu);
+                    v.get(cpu).addFirst(b);
                 }
+            } else {
+                total++;
+                rest++;
+                restf++;
             }
 
 
@@ -125,16 +135,21 @@ public class fcfs {
                     v.get(i).addLast(1);
                 }
             }
-            if (passn == n - 1) {
-                for (int i = 0; i < n; i++) {
-                    if (!pass[i]) {
-                        cpu = i;
-                        break;
-                    }
-                }
-            }
+//            if (passn == n - 1) {
+//                for (int i = 0; i < n; i++) {
+//                    if (!pass[i]) {
+//                        cpu = i;
+//                        break;
+//                    }
+//                }
+//            }
+            //}
+
         }
 
+        if(restf!=0){
+            rest -= restf;
+        }
         bw.write(rest + "\n");
         for (int i = 0; i < n; i++) {
             bw.write(endtime[i] + "\n");

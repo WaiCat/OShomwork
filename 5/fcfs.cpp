@@ -11,8 +11,8 @@ using namespace std;
 
 int main()
 {
-    ifstream fin("7.inp");
-    ofstream fout("77.txt");
+    ifstream fin("fcfs.inp");
+    ofstream fout("fcfs.out");
 
     int n;
     fin >> n;
@@ -20,6 +20,7 @@ int main()
     vector<deque<int>> v;
     int total = 0;
     int rest = 0;
+    int restf = 0;
 
     deque<int> q;
 
@@ -64,69 +65,43 @@ int main()
             }
         }
 
-        if (passn == n - 1)
+        int b = 0;
+        if (!q.empty())
         {
-            int num = v[cpu].front();
+            restf = 0;
+            cpu = q.front();
+            q.pop_front();
+            b = v[cpu].front();
             v[cpu].pop_front();
-            if (num == -1)
+            total++;
+            b--;
+            if (b == 0)
             {
-                endtime[cpu] = total;
-                break;
-            }
-            total += num;
-            if (v[cpu].back() == 1)
-            {
-                rest += num;
-                v[cpu].pop_back();
-                v[cpu].push_back(0);
-                if (v[cpu].size() <= 2)
+                if (v[cpu].front() == -1)
                 {
-                    rest -= num;
-                }
-            }
-            else
-            {
-                v[cpu].pop_back();
-                v[cpu].push_back(1);
-            }
-            continue;
-        }
-        else
-        {
-            int b = 0;
-            if (!q.empty())
-            {
-                cpu = q.front();
-                q.pop_front();
-                b = v[cpu].front();
-                v[cpu].pop_front();
-                total++;
-                b--;
-                if (b == 0)
-                {
-                    if (v[cpu].front() == -1)
-                    {
-                        pass[cpu] = true;
-                        endtime[cpu] = total;
-                        passn++;
-                    }
-                    else
-                    {
-                        v[cpu].pop_back();
-                        v[cpu].push_back(2);
-                    }
+                    pass[cpu] = true;
+                    endtime[cpu] = total;
+//                    fout << rest << " " << total << "\n";
+                    passn++;
                 }
                 else
                 {
-                    q.push_front(cpu);
-                    v[cpu].push_front(b);
+                    v[cpu].pop_back();
+                    v[cpu].push_back(2);
                 }
             }
             else
             {
-                total++;
-                rest++;
+                q.push_front(cpu);
+                v[cpu].push_front(b);
             }
+        }
+        else
+        {
+            restf++;
+
+            total++;
+            rest++;
         }
 
         for (int i = 0; i < v.size(); i++)
@@ -144,6 +119,7 @@ int main()
                     {
                         pass[i] = true;
                         endtime[i] = total;
+//                        fout << rest << " " << total << "\n";
                         passn++;
                     }
                     else
@@ -162,17 +138,10 @@ int main()
                 v[i].push_back(1);
             }
         }
-        if (passn == n - 1)
-        {
-            for (int i = 0; i < n; i++)
-            {
-                if (!pass[i])
-                {
-                    cpu = i;
-                    break;
-                }
-            }
-        }
+    }
+    if (restf != 0)
+    {
+        rest -= restf;
     }
     fout << rest << "\n";
     for (int i = 0; i < n; i++)
@@ -182,4 +151,6 @@ int main()
     fout.close();
 
     return 0;
+
+
 }
