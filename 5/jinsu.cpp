@@ -26,8 +26,8 @@ public:
 
 int main()
 {
-    fin.open("4.inp");
-    fout.open("44444.txt");
+    fin.open("7.inp");
+    fout.open("77777.txt");
 
     fin >> n;
     vector<Process> v(n);
@@ -86,14 +86,6 @@ int main()
             }
         }
 
-        // if (finish == v.size() - 1)
-        // {
-        //     if (finish == v.size() - 1)
-        //     {
-        //         fout << idle;
-        //     }
-        // }
-
         int a = 0;
 
         if (finish == v.size())
@@ -105,23 +97,13 @@ int main()
             total += min_ready - total;
         }
 
-        if (finish == v.size()-2)
-        {
-                cout << 0;
-        }
-
         total += v[use_index].p.front().first; // cpu 사용
         v[use_index].p.pop_front();
         v[use_index].p_size--;
         if (v[use_index].p_size == 0)
         {
-            if(use_index== 498){
-                cout << 0;
-            }
             v[use_index].isFinish = true;
             v[use_index].finish_time = total;
-            fout << idle << " " << total << "\n";
-            time = total;
         }
 
         if (v[use_index].isFinish == true)
@@ -131,13 +113,8 @@ int main()
         v[use_index].p_size--;
         if (v[use_index].p_size == 0)
         {
-            if(use_index== 498){
-                cout << 0;
-            }
             v[use_index].isFinish = true;
             v[use_index].finish_time = v[use_index].ready;
-            fout << idle << " " << v[use_index].ready << "\n";
-            time = v[use_index].ready;
         }
     }
     fout << idle << endl;
