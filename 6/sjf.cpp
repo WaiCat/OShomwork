@@ -11,6 +11,15 @@
 
 using namespace std;
 
+class fc{
+    public:
+    int ready;
+    deque<int> d;
+    int fin = 0;
+    bool rd = true;
+    bool cntflag = false;
+};
+
 struct Num
 {
 	int index, num, time;
@@ -74,20 +83,16 @@ int main()
 	int n;
 	fin >> n;
 
-	vector<deque<int>> v;
+	vector<fc> v(n);
 	vector<bool> pass(n);
 	vector<int> endtime(n);
 	int total = 0, rest = 0, restf = 0;
 
 	priority_queue<Num, vector<Num>, MyComparator> q;
 
-	//int endtime[n];
-
 	priority_queue<Num, vector<Num>, MComparator> start;
-	//bool pass[n];
 	int passn = 0;
 
-	//memset(pass, false, sizeof(pass));
 
 	for (int i = 0; i < n; i++)
 	{
@@ -104,14 +109,14 @@ int main()
 			if (end == -1)
 			{
 				d.push_back(end);
-				d.push_back(0);
 				break;
 			}
 			d.push_back(end);
 		}
         Num k(i, num, d.front());
 		start.push(k);
-		v.push_back(d);
+		v[i].d=d;
+		v[i].fin=0;
 	}
 
 	int cpu = 0;
@@ -139,11 +144,11 @@ int main()
 			cpu = k.index;
 			q.pop();
 
-			b = v[cpu].front();
-			v[cpu].pop_front();
+			b = v[cpu].d.front();
+			v[cpu].d.pop_front();
 
 			total += b;
-			if (v[cpu].front() == -1)
+			if (v[cpu].d.front() == -1)
 			{
 				pass[cpu] = true;
 				endtime[cpu] = total;
@@ -151,36 +156,11 @@ int main()
 			}
 			else
 			{
-				v[cpu].pop_back();
-				v[cpu].push_back(2);
+				v[cpu].fin=2;
 			}
 		}
 		else
 		{
-			/*int min = INT_MAX;
-
-			for (int i = 0; i < v.size(); i++)
-			{
-				if (v[i].back() == 1 && !pass[i])
-				{
-					int k = v[i].front();
-					min = v[i].front() < min ? v[i].front() : min;
-				}
-			}
-			if (start.size() > 0)
-			{
-				Num k = start.top();
-				if (k.num < total + min)
-				{
-					q.push(k);
-					start.pop();
-					min = k.num - total;
-				}
-			}
-			total += min;
-			rest += min;
-			restf += min;
-			b = min;*/
 			total++;
 			rest++;
 			restf++;
@@ -188,10 +168,10 @@ int main()
 
 		for (int i = 0; i < v.size(); i++)
 		{
-			if (v[i].back() == 1 && !pass[i])
+			if (v[i].fin == 1 && !pass[i])
 			{
-				int a = v[i].front();
-				v[i].pop_front();
+				int a = v[i].d.front();
+				v[i].d.pop_front();
 				if (b == 0)
 				{
 					a--;
@@ -202,9 +182,8 @@ int main()
 				}
 				if (a < 1)
 				{
-					v[i].pop_back();
-					v[i].push_back(0);
-					if (v[i].front() == -1)
+					v[i].fin = 0;
+					if (v[i].d.front() == -1)
 					{
 						pass[i] = true;
 						endtime[i] = total + a;
@@ -212,19 +191,18 @@ int main()
 					}
 					else
 					{
-						Num k(i, total + a, v[i].front());
+						Num k(i, total + a, v[i].d.front());
 						q.push(k);
 					}
 				}
 				else
 				{
-					v[i].push_front(a);
+					v[i].d.push_front(a);
 				}
 			}
-			if (v[i].back() == 2)
+			if (v[i].fin == 2)
 			{
-				v[i].pop_back();
-				v[i].push_back(1);
+				v[i].fin =1;
 			}
 		}
 	}
