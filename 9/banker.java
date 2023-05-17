@@ -3,7 +3,7 @@ import java.util.*;
 
 public class banker {
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Administrator\\Downloads\\OShomwork\\9\\2.inp"));
+        BufferedReader br = new BufferedReader(new FileReader("banker.inp"));
 
         BufferedWriter bw = new BufferedWriter(new FileWriter("banker.out"));
 
@@ -54,13 +54,17 @@ public class banker {
             if(s.equals("request")){
                 Vector<Integer> v = new Vector<Integer>();
                 int index = Integer.parseInt(st.nextToken());
+                if(end[index]){
+                    end[index] = false;
+                }
                 int[] c = need[index].clone();
                 v.add(index);
                 int[] b = availavle.clone();
-
+                int num = 0;
                 for (int i = 0; i < m; i++) {
                     int k = Integer.parseInt(st.nextToken());
                     c[i]-=k;
+                    num+=c[i];
                     if(k>need[index][i]){
                         state=false;
                         break;
@@ -79,7 +83,10 @@ public class banker {
                             continue;
                         }
                         for (int k = 0; k < m; k++) {
-                            if(k==index){
+                            if(i==index){
+                                if(num==0){
+                                    break;
+                                }
                                 if(c[k] > b[k]){
                                     break;
                                 }
@@ -125,8 +132,10 @@ public class banker {
                 }
 
                 Boolean can=false;
-                for (int i = 0; i < q.size(); i++) {
-                    Vector<Integer> v = q.get(i);
+                int size = q.size();
+                int del = 0;
+                for (int i = 0; i < size; i++) {
+                    Vector<Integer> v = q.get(i-del);
                     index = v.get(0);
                     for (int j = 0; j < m; j++) {
                         if(v.get(j+1) > availavle[j]){
@@ -136,10 +145,18 @@ public class banker {
                             can =true;
                         }
                     }
+                    for (int j = 0; j < m; j++) {
+                        if(need[index][j] < v.get((j+1))){
+                            can = false;
+                            break;
+                        }
+                    }
                     if(can){
+                        can=false;
                         int[] b = availavle.clone();
                         int[] c = need[index].clone();
                         for (int j = 0; j < m; j++) {
+                            b[j]-= v.get(j+1);
                             c[j]-= v.get(j+1);
                         }
 
@@ -150,7 +167,7 @@ public class banker {
                                 continue;
                             }
                             for (int k = 0; k < m; k++) {
-                                if(k==index){
+                                if(j==index){
                                     if(c[k] > b[k]){
                                         break;
                                     }
@@ -168,6 +185,7 @@ public class banker {
                             }
                         }
                         if(safe){
+                            safe=false;
                             int sum=0;
                             for (int j = 0; j < m; j++) {
                                 need[index][j] -= v.get(j+1);
@@ -177,8 +195,8 @@ public class banker {
                             if(sum == 0){
                                 end[index] = true;
                             }
-                            q.remove(i);
-                            break;
+                            q.remove(i-del);
+                            del++;
                         }
                     }
                 }
@@ -187,7 +205,7 @@ public class banker {
             }
             for (int i = 0; i < m; i++) {
                 bw.write(availavle[i] + " ");
-                System.out.println(availavle[i] + " ");
+                System.out.print(availavle[i] + " ");
             }
             System.out.println("\n");
             bw.write("\n");
