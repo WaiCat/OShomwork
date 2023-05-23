@@ -112,6 +112,38 @@ public class allocation {
             }
             totaltime++;
         }
+        totaltime = 0;
+        memory = new Vector<qprocess>();
+        memory.add(new qprocess(-1, 1000, false));
+        //first fit
+        while(true) {
+            Boolean endb = false;
+            //시작시간 도달한 프로세서 큐에 올림
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).start <= totaltime) {
+                    q.add(new qprocess(list.get(i).run, list.get(i).size, list.get(i).last));
+                    list.remove(i);
+                }
+            }
+
+            //시간 다된 프로세서 자원 반납
+            for (int i = 0; i < memory.size(); i++) {
+                if (memory.get(i).end != -1 && memory.get(i).end <= totaltime) {
+                    memory.get(i).end = -1;
+                }
+            }
+
+            //반납된 자원 합치기
+            for (int i = 0; i < memory.size() - 1; i++) {
+                if (memory.get(i).end == -1) {
+                    if (memory.get(i + 1).end == -1) {
+                        memory.get(i).size += memory.get(i + 1).end;
+                        memory.remove(i + 1);
+                        i--;
+                    }
+                }
+            }
+        }
 
     }
 }
