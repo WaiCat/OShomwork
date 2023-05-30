@@ -34,7 +34,7 @@ struct QProcess {
 };
 
 int main() {
-    ifstream inputFile("2.inp");
+    ifstream inputFile("allocation.inp");
     ofstream outputFile("allocation.out");
 
     int n;
@@ -83,7 +83,7 @@ int main() {
         for (int i = 0; i < q.size(); i++) {
             int size = q[i].size;
             for (int j = 0; j < memory.size(); j++) {
-                if (memory[j].end == -1 && memory[j].size > size) {
+                if (memory[j].end == -1 && memory[j].size >= size) {
                     memory[j].size -= size;
                     memory.insert(memory.begin() + j, QProcess(totaltime + q[i].end, q[i].size, q[i].last));
                     if (memory[j].last) {
@@ -143,7 +143,7 @@ int main() {
             int minSize = INT_MAX;
             int index = -1;
             for (int j = 0; j < memory.size(); j++) {
-                if (memory[j].end == -1 && memory[j].size > q[i].size && memory[j].size < minSize) {
+                if (memory[j].end == -1 && memory[j].size >= q[i].size && memory[j].size < minSize) {
                     minSize = memory[j].size;
                     index = j;
                 }
@@ -208,7 +208,7 @@ int main() {
             int maxSize = INT_MIN;
             int index = -1;
             for (int j = 0; j < memory.size(); j++) {
-                if (memory[j].end == -1 && memory[j].size > q[i].size && memory[j].size > maxSize) {
+                if (memory[j].end == -1 && memory[j].size >= q[i].size && memory[j].size > maxSize) {
                     maxSize = memory[j].size;
                     index = j;
                 }
